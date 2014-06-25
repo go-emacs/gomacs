@@ -1,6 +1,8 @@
 package util
 
 import (
+	"log"
+	"os"
 	"path/filepath"
 	"runtime"
 	"text/template"
@@ -12,6 +14,7 @@ var gomacsDir string
 
 func init() {
 	gomacsDir = emacs.Cmd("github.com/atotto/gomacs").LocalPath()
+	genDefineel()
 }
 
 //
@@ -39,18 +42,27 @@ func GoModeLoadPath() []string {
 	return []string{"-L", filepath.Join(runtime.GOROOT(), "misc", "emacs")}
 }
 
-func genInitel() {
-	config = map[string]string{
-		"GOROOT": runtime.GOROOT(),
-	}
-	t = template.Must(template.New("init.el").Parse(initel))
-}
-
 var (
 	config map[string]string
 	t      *template.Template
 )
 
-const initel = `
+func genDefineel() {
+	config = map[string]string{
+		"GOROOT":             runtime.GOROOT(),
+		"GOMACS_EMACSD_PATH": Emacsd(),
+	}
+	t = template.Must(template.New("define.el").Parse(initel))
+	f, err := os.Create(filepath.Join(Emacsd(), "define.el"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = t.Execute(f, config)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
 
+const initel = `
+(defvar gomacs-emacsd-path "{{.GOMACS_EMACSD_PATH}}")
 `

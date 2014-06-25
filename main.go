@@ -60,6 +60,7 @@ func emacsArgs(config, options []string) []string {
 	args = append(args, config...)
 	args = append(args, packages.Args()...)
 	args = append(args, util.GoModeLoadPath()...)
+	args = append(args, "-l", filepath.Join(util.Emacsd(), "define.el"))
 	args = append(args, "-l", filepath.Join(util.Emacsd(), "init.el"))
 	args = append(args, options...)
 
