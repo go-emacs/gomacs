@@ -37,11 +37,6 @@ func GetLoadPaths() []string {
 	return nil
 }
 
-//
-func GoModeLoadPath() []string {
-	return []string{"-L", filepath.Join(runtime.GOROOT(), "misc", "emacs")}
-}
-
 var (
 	config map[string]string
 	t      *template.Template
@@ -50,6 +45,7 @@ var (
 func genDefineel() {
 	config = map[string]string{
 		"GOROOT":             runtime.GOROOT(),
+		"GOPATH":             os.Getenv("GOPATH"), // TODO: parse first path
 		"GOMACS_EMACSD_PATH": Emacsd(),
 	}
 	t = template.Must(template.New("define.el").Parse(initel))
@@ -64,5 +60,7 @@ func genDefineel() {
 }
 
 const initel = `
+(defvar goroot "{{.GOROOT}}")
+(defvar gopath "{{.GOPATH}}")
 (defvar gomacs-emacsd-path "{{.GOMACS_EMACSD_PATH}}")
 `

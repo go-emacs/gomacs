@@ -10,10 +10,10 @@
 
 (define-key global-map "\C-h" 'delete-backward-char)
 (global-set-key "\M-g" 'goto-line)
+(global-set-key "\C-_" 'advertised-undo)
 
-(require 'go-mode-load)
+(require 'go-mode-autoloads)
 (require 'golint)
-;(add-hook 'go-mode-hook (lambda () (go-oracle-mode t) ))
 
 (add-hook 'go-mode-hook 
           (lambda()
@@ -37,8 +37,14 @@
                     :underline t :foreground "darkgreen"
                     :weight 'bold)
 
+(load (concat gopath "/src/golang.org/x/tools/cmd/oracle/oracle.el"))
+(add-hook 'go-mode-hook (lambda () (go-oracle-mode t) ))
+
+(load (concat gopath "/src/golang.org/x/tools/refactor/rename/rename.el"))
+
 (require 'autoinsert)
 (setq auto-insert-directory (concat gomacs-emacsd-path "/_templates/"))
 (define-auto-insert "\\.go\\'" "T.go")
 (define-auto-insert "\\test.go\\'" "T_test.go")
 (add-hook 'find-file-hooks 'auto-insert)
+

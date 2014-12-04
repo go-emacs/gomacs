@@ -12,9 +12,15 @@ import (
 )
 
 var packages = emacs.Packages{
+	emacs.Lisp("github.com/dominikh/go-mode.el"),
 	emacs.Lisp("github.com/golang/lint/misc/emacs"),
 	emacs.Lisp("github.com/syohex/emacs-go-eldoc"),
+	emacs.Cmd("golang.org/x/tools/cmd/oracle"),
+	emacs.Cmd("golang.org/x/tools/cmd/goimports"),
+	emacs.Cmd("golang.org/x/tools/cmd/gorename"),
 	emacs.Cmd("github.com/golang/lint/golint"),
+	emacs.Cmd("github.com/nsf/gocode"),
+	emacs.Cmd("code.google.com/p/rog-go/exp/cmd/godef"),
 }
 
 func main() {
@@ -59,7 +65,6 @@ func emacsArgs(config, options []string) []string {
 	args := []string{"emacs"}
 	args = append(args, config...)
 	args = append(args, packages.Args()...)
-	args = append(args, util.GoModeLoadPath()...)
 	args = append(args, "-l", filepath.Join(util.Emacsd(), "define.el"))
 	args = append(args, "-l", filepath.Join(util.Emacsd(), "init.el"))
 	args = append(args, options...)
