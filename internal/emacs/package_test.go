@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/atotto/gomacs/util/emacs"
+	"github.com/atotto/gomacs/internal/emacs"
 )
 
 const testPackage = "github.com/atotto/yasnippet-golang"

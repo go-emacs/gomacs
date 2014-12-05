@@ -8,8 +8,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/atotto/gomacs/util"
-	"github.com/atotto/gomacs/util/emacs"
+	"github.com/atotto/gomacs/internal/emacs"
 )
 
 var packages = emacs.List{
@@ -25,7 +24,7 @@ var packages = emacs.List{
 }
 
 func main() {
-	config := util.GetConfig()
+	config := GetConfig()
 
 	options := parse()
 
@@ -66,8 +65,8 @@ func emacsArgs(config, options []string) []string {
 	args := []string{"emacs"}
 	args = append(args, config...)
 	args = append(args, packages.Args()...)
-	args = append(args, "-l", filepath.Join(util.Emacsd(), "define.el"))
-	args = append(args, "-l", filepath.Join(util.Emacsd(), "init.el"))
+	args = append(args, "-l", filepath.Join(EMACS_DIR, "env.el"))
+	args = append(args, "-l", filepath.Join(EMACS_DIR, "init.el"))
 	args = append(args, options...)
 
 	return args

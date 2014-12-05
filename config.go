@@ -1,4 +1,4 @@
-package util
+package main
 
 import (
 	"encoding/json"
@@ -27,7 +27,7 @@ func configFile() string {
 	}
 	_, err = os.Stat(file)
 	if os.IsNotExist(err) {
-		file = filepath.Join(GomacsDir(), config)
+		file = filepath.Join(GOMACS_DIR, config)
 	}
 
 	return file

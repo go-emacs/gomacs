@@ -1,13 +1,11 @@
-package util_test
+package main
 
 import (
 	"testing"
-
-	"github.com/atotto/gomacs/util"
 )
 
 func TestGetConfig(t *testing.T) {
-	c := util.GetConfig()
+	c := GetConfig()
 
 	if len(c.Args) == 0 || c.Args[0] != "-q" {
 		t.Fatalf("want -q option got %+v", c.Args)
