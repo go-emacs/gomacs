@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"path"
 )
 
 type kind int
@@ -26,7 +27,7 @@ type List []*P
 
 func (l *List) iter(fn func(*P) error) error {
 	for _, pkg := range *l {
-		log.Printf("fetch: %s\n", pkg.path)
+		log.Printf("install: %s\n", pkg.path)
 		err := fn(pkg)
 		if err != nil {
 			return err
@@ -35,8 +36,22 @@ func (l *List) iter(fn func(*P) error) error {
 	return nil
 }
 
-func (l *List) Install() error {
+func (l *List) InstallForce() error {
 	return l.iter((*P).Install)
+}
+
+func (l *List) Install() error {
+	for _, pkg := range *l {
+		if pkg.IsInstaled() {
+			continue
+		}
+		log.Printf("install: %s\n", pkg.path)
+		err := pkg.Install()
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (l *List) Update() error {
@@ -71,6 +86,16 @@ func (p *P) Args() []string {
 // Install installs the package from internet.
 func (p *P) Install() error {
 	return fetch(p.path, false)
+}
+
+func (p *P) IsInstaled() bool {
+	if p.kind == cmd {
+		_, err := exec.LookPath(path.Base(p.path))
+		return err == nil
+	} else {
+		_, err := build.Import(p.path, os.Getenv("GOPATH"), build.FindOnly)
+		return err == nil
+	}
 }
 
 // Update updates the package from internet.

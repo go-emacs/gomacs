@@ -12,7 +12,13 @@ const testPackage = "github.com/atotto/yasnippet-golang"
 func TestDownload(t *testing.T) {
 	p := emacs.Lisp(testPackage)
 	p.Install()
+	if p.IsInstaled() == false {
+		t.Fatalf("want installed")
+	}
 	p.Clean()
+	if p.IsInstaled() == true {
+		t.Fatalf("want not installed")
+	}
 }
 
 func TestPackagesArgs(t *testing.T) {

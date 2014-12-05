@@ -1,11 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
-	"strings"
 	"syscall"
 
 	"github.com/atotto/gomacs/internal/emacs"
@@ -26,7 +26,7 @@ var packages = emacs.List{
 func main() {
 	config := GetConfig()
 
-	options := parse()
+	options := Parse()
 
 	exe, err := exec.LookPath(config.Emacs)
 	if err != nil {
@@ -41,24 +41,48 @@ func main() {
 	}
 }
 
-const gomacsOpt = "-gomacs."
-
-func parse() (options []string) {
+func Parse() (options []string) {
 	for _, arg := range os.Args[1:] {
-		if strings.HasPrefix(arg, gomacsOpt) {
-			switch strings.TrimPrefix(arg, gomacsOpt) {
-			case "update":
-				packages.Update()
-			case "init":
-				packages.Install()
-			default:
-				panic("not implemented yet.")
-			}
-		} else {
+		switch arg {
+		case "--help":
+			Usage()
+			options = append(options, arg)
+			break
+		case "--update":
+			packages.Update()
+			os.Exit(0)
+		case "--install":
+			packages.InstallForce()
+			os.Exit(0)
+		default:
 			options = append(options, arg)
 		}
 	}
+	packages.Install()
 	return
+}
+
+var usage = `
+Launch:
+
+   $ gomacs                  # launch emacs
+
+Update:
+
+   $ gomacs --update         # update emacs lisp from internet.
+
+The gomacs can use emacs option and operation. for example:
+
+   $ gomacs --help           # show emacs --help
+   $ gomacs main.go          # open main.go
+   $ gomacs +12 main.go      # go to line
+   $ gomacs -rv              # switch foreground and background color
+
+`
+
+func Usage() {
+	fmt.Printf("Usage of %s:\n", os.Args[0])
+	fmt.Println(usage)
 }
 
 func emacsArgs(config, options []string) []string {
