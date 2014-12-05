@@ -12,7 +12,7 @@ import (
 	"github.com/atotto/gomacs/util/emacs"
 )
 
-var packages = emacs.Packages{
+var packages = emacs.List{
 	emacs.Lisp("github.com/dominikh/go-mode.el"),
 	emacs.Lisp("github.com/golang/lint/misc/emacs"),
 	emacs.Lisp("github.com/syohex/emacs-go-eldoc"),
@@ -51,7 +51,7 @@ func parse() (options []string) {
 			case "update":
 				packages.Update()
 			case "init":
-				packages.Setup()
+				packages.Install()
 			default:
 				panic("not implemented yet.")
 			}

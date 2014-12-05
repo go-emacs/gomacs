@@ -16,15 +16,16 @@ const (
 	lisp
 )
 
-type Package struct {
+// P represents package info.
+type P struct {
 	path string
 	kind kind
 }
 
-type Packages []*Package
+type List []*P
 
-func (pkgs *Packages) iter(fn func(*Package) error) error {
-	for _, pkg := range *pkgs {
+func (l *List) iter(fn func(*P) error) error {
+	for _, pkg := range *l {
 		log.Printf("fetch: %s\n", pkg.path)
 		err := fn(pkg)
 		if err != nil {
@@ -34,16 +35,16 @@ func (pkgs *Packages) iter(fn func(*Package) error) error {
 	return nil
 }
 
-func (pkgs *Packages) Setup() error {
-	return pkgs.iter((*Package).Setup)
+func (l *List) Install() error {
+	return l.iter((*P).Install)
 }
 
-func (pkgs *Packages) Update() error {
-	return pkgs.iter((*Package).Update)
+func (l *List) Update() error {
+	return l.iter((*P).Update)
 }
 
-func (pkgs *Packages) Args() (args []string) {
-	for _, pkg := range *pkgs {
+func (l *List) Args() (args []string) {
+	for _, pkg := range *l {
 		arg := pkg.Args()
 		if arg != nil {
 			args = append(args, arg...)
@@ -52,40 +53,40 @@ func (pkgs *Packages) Args() (args []string) {
 	return args
 }
 
-func Cmd(path string) *Package {
-	return &Package{path: path, kind: cmd}
+func Cmd(path string) *P {
+	return &P{path: path, kind: cmd}
 }
 
-func Lisp(path string) *Package {
-	return &Package{path: path, kind: lisp}
+func Lisp(path string) *P {
+	return &P{path: path, kind: lisp}
 }
 
-func (pkg *Package) Args() []string {
-	if pkg.kind == lisp {
-		return []string{"-L", pkg.LocalPath()}
+func (p *P) Args() []string {
+	if p.kind == lisp {
+		return []string{"-L", p.LocalPath()}
 	}
 	return nil
 }
 
-// Download downloads the package from internet.
-func (pkg *Package) Setup() error {
-	return fetch(pkg.path, false)
+// Install installs the package from internet.
+func (p *P) Install() error {
+	return fetch(p.path, false)
 }
 
 // Update updates the package from internet.
-func (pkg *Package) Update() error {
+func (p *P) Update() error {
 	// TODO: implement
-	return fetch(pkg.path, true)
+	return fetch(p.path, true)
 }
 
 // Clean remove the package from file system.
-func (pkg *Package) Clean() error {
-	return clean(pkg.path)
+func (p *P) Clean() error {
+	return clean(p.path)
 }
 
 // LocalPath returns the package local absolute path.
-func (pkg *Package) LocalPath() string {
-	path, err := packageAbsolutePath(pkg.path)
+func (p *P) LocalPath() string {
+	path, err := packageAbsolutePath(p.path)
 	if err != nil {
 		log.Fatal(err)
 	}
