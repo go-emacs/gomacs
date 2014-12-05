@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -30,14 +31,14 @@ func main() {
 
 	exe, err := exec.LookPath(config.Emacs)
 	if err != nil {
-		panic(err)
+		log.Fatalf("ERROR: %s\n", err)
 	}
 
 	env := os.Environ()
 	args := emacsArgs(config.Args, options)
 	err = syscall.Exec(exe, args, env)
 	if err != nil {
-		panic(err)
+		log.Fatalf("ERROR: %s\n", err)
 	}
 }
 
