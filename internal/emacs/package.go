@@ -4,10 +4,16 @@ import (
 	"bytes"
 	"errors"
 	"go/build"
+	"io/ioutil"
 	"log"
+	"net/http"
 	"os"
 	"os/exec"
 	"path"
+	"path/filepath"
+	"strings"
+
+	"github.com/atotto/gomacs/internal/env"
 )
 
 type kind int
@@ -15,11 +21,20 @@ type kind int
 const (
 	cmd kind = 1 << iota
 	lisp
+	lispfile
 )
+
+type PackageManager interface {
+	Install() error
+	InstallForce() error
+	Update() error
+	Clean() error
+}
 
 // P represents package info.
 type P struct {
 	path string
+	name string
 	kind kind
 }
 
@@ -72,8 +87,21 @@ func Cmd(path string) *P {
 	return &P{path: path, kind: cmd}
 }
 
-func Lisp(path string) *P {
+func ElispPackage(path string) *P {
+	if strings.HasPrefix(path, "http://") {
+		return &P{path: path, kind: lispfile}
+	}
 	return &P{path: path, kind: lisp}
+}
+
+func Elisp(url string, name string) *P {
+	if strings.HasPrefix(url, "http://") {
+		if name == "" {
+			name = path.Base(url)
+		}
+		return &P{path: url, name: name, kind: lispfile}
+	}
+	return &P{path: url, kind: lisp}
 }
 
 func (p *P) Args() []string {
@@ -85,23 +113,34 @@ func (p *P) Args() []string {
 
 // Install installs the package from internet.
 func (p *P) Install() error {
-	return fetch(p.path, false)
+	switch p.kind {
+	case lispfile:
+		return wget(p.path, p.name)
+	default:
+		return goget(p.path, false)
+	}
 }
 
 func (p *P) IsInstaled() bool {
-	if p.kind == cmd {
+	switch p.kind {
+	case cmd:
 		_, err := exec.LookPath(path.Base(p.path))
 		return err == nil
-	} else {
-		_, err := build.Import(p.path, os.Getenv("GOPATH"), build.FindOnly)
+	case lisp:
+		_, err := build.Import(p.path, build.Default.GOROOT, build.FindOnly)
 		return err == nil
+	case lispfile:
+		_, err := os.Stat(filepath.Join(env.ELISP_PATH, p.name))
+		return !os.IsNotExist(err)
+	default:
+		panic("not implemeted yet.")
 	}
 }
 
 // Update updates the package from internet.
 func (p *P) Update() error {
 	// TODO: implement
-	return fetch(p.path, true)
+	return goget(p.path, true)
 }
 
 // Clean remove the package from file system.
@@ -120,7 +159,7 @@ func (p *P) LocalPath() string {
 
 var no_error = []byte(`no buildable Go source files`)
 
-func fetch(pkgpath string, update bool) error {
+func goget(pkgpath string, update bool) error {
 	var args []string
 	if update {
 		args = []string{"get", "-u", pkgpath}
@@ -138,6 +177,26 @@ func fetch(pkgpath string, update bool) error {
 		if !bytes.Contains(buf.Bytes(), no_error) {
 			return errors.New(buf.String())
 		}
+	}
+	return nil
+}
+
+func wget(url string, name string) (err error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		return
+	}
+	buf, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+	if err = resp.Body.Close(); err != nil {
+		return
+	}
+	fname := filepath.Join(env.ELISP_PATH, name)
+	// truncate file if it already exists.
+	if err = ioutil.WriteFile(fname, buf, 0666); err != nil {
+		return
 	}
 	return nil
 }

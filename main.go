@@ -8,20 +8,8 @@ import (
 	"path/filepath"
 	"syscall"
 
-	"github.com/atotto/gomacs/internal/emacs"
+	"github.com/atotto/gomacs/internal/env"
 )
-
-var packages = emacs.List{
-	emacs.Lisp("github.com/dominikh/go-mode.el"),
-	emacs.Lisp("github.com/golang/lint/misc/emacs"),
-	emacs.Lisp("github.com/syohex/emacs-go-eldoc"),
-	emacs.Cmd("golang.org/x/tools/cmd/oracle"),
-	emacs.Cmd("golang.org/x/tools/cmd/goimports"),
-	emacs.Cmd("golang.org/x/tools/cmd/gorename"),
-	emacs.Cmd("github.com/golang/lint/golint"),
-	emacs.Cmd("github.com/nsf/gocode"),
-	emacs.Cmd("code.google.com/p/rog-go/exp/cmd/godef"),
-}
 
 func main() {
 	config := GetConfig()
@@ -89,8 +77,8 @@ func emacsArgs(config, options []string) []string {
 	args := []string{"emacs"}
 	args = append(args, config...)
 	args = append(args, packages.Args()...)
-	args = append(args, "-l", filepath.Join(EMACS_DIR, "env.el"))
-	args = append(args, "-l", filepath.Join(EMACS_DIR, "init.el"))
+	args = append(args, "-l", filepath.Join(env.EMACSD_PATH, "env.el"))
+	args = append(args, "-l", filepath.Join(env.EMACSD_PATH, "init.el"))
 	args = append(args, options...)
 
 	return args

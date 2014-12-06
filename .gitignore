@@ -27,3 +27,4 @@ _testmain.go
 # gomacs
 .gomacs.json
 emacs.d/env.el
+emacs.d/elisp/*

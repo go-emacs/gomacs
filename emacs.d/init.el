@@ -12,6 +12,10 @@
 (global-set-key "\M-g" 'goto-line)
 (global-set-key "\C-_" 'advertised-undo)
 
+(add-to-list 'load-path (concat gomacs-emacsd-path "/elisp"))
+(when (<= emacs-major-version 24.2)
+  (require 'cl-lib))
+
 (require 'go-mode-autoloads)
 (require 'golint)
 
@@ -47,4 +51,3 @@
 (define-auto-insert "\\.go\\'" "T.go")
 (define-auto-insert "\\test.go\\'" "T_test.go")
 (add-hook 'find-file-hooks 'auto-insert)
-

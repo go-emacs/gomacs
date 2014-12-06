@@ -7,6 +7,8 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+
+	"github.com/atotto/gomacs/internal/env"
 )
 
 type Config struct {
@@ -27,7 +29,7 @@ func configFile() string {
 	}
 	_, err = os.Stat(file)
 	if os.IsNotExist(err) {
-		file = filepath.Join(GOMACS_DIR, config)
+		file = filepath.Join(env.GOMACS_DIR, config)
 	}
 
 	return file
