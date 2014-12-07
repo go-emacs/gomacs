@@ -1,5 +1,5 @@
 /*
-The gomacs provides emacs rapper command for golang programming.
+The gomacs provides golang programming environment for emacs.
 
 Install
 
