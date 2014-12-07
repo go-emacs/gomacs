@@ -14,6 +14,7 @@ const PACKAGE_PATH = "github.com/go-emacs/gomacs"
 var GOMACS_DIR string
 var ELISP_PATH string
 var EMACSD_PATH string
+var GOPATH string
 
 func init() {
 	p, err := build.Import(PACKAGE_PATH, build.Default.GOROOT, build.FindOnly)
@@ -23,6 +24,11 @@ func init() {
 	GOMACS_DIR = p.Dir
 	EMACSD_PATH = filepath.Join(GOMACS_DIR, "emacs.d")
 	ELISP_PATH = filepath.Join(EMACSD_PATH, "elisp")
+	GOPATH = os.Getenv("GOPATH")
+	if GOPATH == "" {
+		log.Fatal("Please set GOPATH environment.")
+	}
+	GOPATH = filepath.SplitList(GOPATH)[0]
 
 	generateEnvEL()
 }
@@ -35,7 +41,7 @@ var (
 func generateEnvEL() {
 	config = map[string]string{
 		"GOROOT":             runtime.GOROOT(),
-		"GOPATH":             os.Getenv("GOPATH"), // TODO: parse first path
+		"GOPATH":             GOPATH,
 		"GOMACS_EMACSD_PATH": EMACSD_PATH,
 	}
 	t = template.Must(template.New("env.el").Parse(env_el_template))
