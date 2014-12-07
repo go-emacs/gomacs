@@ -28,3 +28,6 @@ _testmain.go
 .gomacs.json
 emacs.d/env.el
 emacs.d/elisp/*
+
+# vagrant
+.vagrant
