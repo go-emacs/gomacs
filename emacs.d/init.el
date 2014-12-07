@@ -72,3 +72,5 @@
 ;(define-auto-insert "\\.go\\'" "T.go")
 ;(define-auto-insert "\\test.go\\'" "T_test.go")
 (add-hook 'find-file-hooks 'auto-insert)
+
+(setq compilation-window-height 10)
