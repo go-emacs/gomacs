@@ -5,7 +5,7 @@ Install
 
 use `go get` command:
 
-   $ go get github.com/atotto/gomacs
+   $ go get github.com/go-emacs/gomacs
 
 Usage
 
@@ -41,7 +41,7 @@ The gomacs search the setting file from:
 
     1 ./.gomacs.json
     2 ~/.config/gomacs/settings.json
-    3 $GOPATH/src/github.com/atotto/gomacs/settings.json
+    3 $GOPATH/src/github.com/go-emacs/gomacs/settings.json
 
 
 enjoy!

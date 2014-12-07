@@ -13,7 +13,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/atotto/gomacs/internal/env"
+	"github.com/go-emacs/gomacs/internal/env"
 )
 
 type kind int

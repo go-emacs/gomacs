@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/atotto/gomacs/internal/emacs"
+	"github.com/go-emacs/gomacs/internal/emacs"
 )
 
 var packages = emacs.List{

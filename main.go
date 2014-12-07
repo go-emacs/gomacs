@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"syscall"
 
-	"github.com/atotto/gomacs/internal/env"
+	"github.com/go-emacs/gomacs/internal/env"
 )
 
 func main() {

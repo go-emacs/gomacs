@@ -16,5 +16,5 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "shell", inline: 'echo "export PATH=$PATH:/home/vagrant/go/bin" >> .bashrc'
   GO_VERSION = "go1.4rc2"
   config.vm.provision "shell", privileged: false, inline: "rm -rf go* && wget -q -O go.linux-amd64.tar.gz https://storage.googleapis.com/golang/"+GO_VERSION+".linux-amd64.tar.gz && tar zxf go.linux-amd64.tar.gz" 
-  config.vm.provision "shell", privileged: false, inline: "PS1='$ ' source .bashrc && go get github.com/atotto/gomacs && gomacs --install"
+  config.vm.provision "shell", privileged: false, inline: "PS1='$ ' source .bashrc && go get github.com/go-emacs/gomacs && gomacs --install"
 end

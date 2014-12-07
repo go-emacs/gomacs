@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/atotto/gomacs/internal/env"
+	"github.com/go-emacs/gomacs/internal/env"
 )
 
 type Config struct {

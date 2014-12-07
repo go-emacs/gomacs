@@ -9,7 +9,7 @@ import (
 	"text/template"
 )
 
-const PACKAGE_PATH = "github.com/atotto/gomacs"
+const PACKAGE_PATH = "github.com/go-emacs/gomacs"
 
 var GOMACS_DIR string
 var ELISP_PATH string
