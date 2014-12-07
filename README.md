@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/go-emacs/gomacs.svg?branch=master)](https://travis-ci.org/go-emacs/gomacs)
 
-# .
+# gomacs
 
 The gomacs provides golang programming environment for emacs.
 
