@@ -59,6 +59,6 @@
 
 (require 'autoinsert)
 (setq auto-insert-directory (concat gomacs-emacsd-path "/_templates/"))
-(define-auto-insert "\\.go\\'" "T.go")
-(define-auto-insert "\\test.go\\'" "T_test.go")
+;(define-auto-insert "\\.go\\'" "T.go")
+;(define-auto-insert "\\test.go\\'" "T_test.go")
 (add-hook 'find-file-hooks 'auto-insert)
