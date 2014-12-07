@@ -1,4 +1,12 @@
+(set-language-environment "Japanese")
+
+;; utf-8
+(prefer-coding-system 'utf-8)
+(setq coding-system-for-read 'utf-8)
+(setq coding-system-for-write 'utf-8)
+
 (menu-bar-mode 0)
+(tool-bar-mode 0)
 (transient-mark-mode t)
 (show-paren-mode t)
 (setq visible-bell t)
@@ -11,6 +19,7 @@
 (define-key global-map "\C-h" 'delete-backward-char)
 (global-set-key "\M-g" 'goto-line)
 (global-set-key "\C-_" 'advertised-undo)
+(define-key minibuffer-local-completion-map "\C-w" 'backward-kill-word)
 
 (add-to-list 'load-path (concat gomacs-emacsd-path "/elisp"))
 (when (<= emacs-major-version 24.2)
@@ -42,6 +51,7 @@
                     :weight 'bold)
 
 (load (concat gopath "/src/golang.org/x/tools/cmd/oracle/oracle.el"))
+(setq go-oracle-command (concat gopath "/bin/oracle"))
 (add-hook 'go-mode-hook (lambda () (go-oracle-mode t) ))
 
 (load (concat gopath "/src/golang.org/x/tools/refactor/rename/rename.el"))
