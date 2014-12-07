@@ -46,6 +46,13 @@
 
 (load (concat gopath "/src/golang.org/x/tools/refactor/rename/rename.el"))
 
+(load (concat gopath "/src/github.com/nsf/gocode/emacs/go-autocomplete.el"))
+(add-to-list 'ac-dictionary-directories (concat gopath "/src/github.com/auto-complete/auto-complete/dict"))
+(require 'go-autocomplete)
+(require 'auto-complete-config)
+(ac-config-default)
+(ac-set-trigger-key "TAB")
+
 (require 'yasnippet)
 (add-to-list 'yas-snippet-dirs (concat gopath "/src/github.com/atotto/yasnippet-golang"))
 (yas-global-mode 1)

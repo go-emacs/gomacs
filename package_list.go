@@ -12,6 +12,8 @@ var packages = emacs.List{
 	emacs.ElispPackage("github.com/dominikh/go-mode.el"),
 	emacs.ElispPackage("github.com/golang/lint/misc/emacs"),
 	emacs.ElispPackage("github.com/syohex/emacs-go-eldoc"),
+	emacs.ElispPackage("github.com/auto-complete/auto-complete"),
+	emacs.ElispPackage("github.com/auto-complete/popup-el"),
 	emacs.ElispPackage("github.com/capitaomorte/yasnippet"),
 	emacs.ElispPackage("github.com/atotto/yasnippet-golang"),
 
