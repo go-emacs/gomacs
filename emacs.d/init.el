@@ -46,6 +46,10 @@
 
 (load (concat gopath "/src/golang.org/x/tools/refactor/rename/rename.el"))
 
+(require 'yasnippet)
+(add-to-list 'yas-snippet-dirs (concat gopath "/src/github.com/atotto/yasnippet-golang"))
+(yas-global-mode 1)
+
 (require 'autoinsert)
 (setq auto-insert-directory (concat gomacs-emacsd-path "/_templates/"))
 (define-auto-insert "\\.go\\'" "T.go")

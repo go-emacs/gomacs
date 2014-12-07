@@ -12,6 +12,9 @@ var packages = emacs.List{
 	emacs.ElispPackage("github.com/dominikh/go-mode.el"),
 	emacs.ElispPackage("github.com/golang/lint/misc/emacs"),
 	emacs.ElispPackage("github.com/syohex/emacs-go-eldoc"),
+	emacs.ElispPackage("github.com/capitaomorte/yasnippet"),
+	emacs.ElispPackage("github.com/atotto/yasnippet-golang"),
+
 	emacs.Cmd("golang.org/x/tools/cmd/oracle"),
 	emacs.Cmd("golang.org/x/tools/cmd/goimports"),
 	emacs.Cmd("golang.org/x/tools/cmd/gorename"),
