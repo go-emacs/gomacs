@@ -45,7 +45,7 @@ The gomacs search the setting file from:
 	3 $GOPATH/src/github.com/go-emacs/gomacs/settings.json
 
 ### Vagrant
-Tou can use the gomacs on vagrant:
+You can use the gomacs on vagrant:
 
     $ cd $GOPATH/src/github.com/go-emacs/gomacs
     $ vagrant up
