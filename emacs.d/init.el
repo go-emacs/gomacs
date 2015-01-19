@@ -6,7 +6,9 @@
 (setq coding-system-for-write 'utf-8)
 
 (menu-bar-mode 0)
-(tool-bar-mode 0)
+(if (display-graphic-p)
+    (progn
+      (tool-bar-mode 0)))
 (transient-mark-mode t)
 (show-paren-mode t)
 (setq visible-bell t)
