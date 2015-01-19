@@ -6,7 +6,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"syscall"
 
 	"github.com/go-emacs/gomacs/internal/env"
 )
@@ -18,14 +17,18 @@ func main() {
 
 	exe, err := exec.LookPath(config.Emacs)
 	if err != nil {
-		log.Fatalf("ERROR: %s\n", err)
+		log.Fatalf("ERROR: LookPath: %s\n", err)
 	}
 
 	env := os.Environ()
 	args := emacsArgs(config.Args, options)
-	err = syscall.Exec(exe, args, env)
+	cmd := exec.Cmd{Path: exe, Args: args, Env: env}
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err = cmd.Run()
 	if err != nil {
-		log.Fatalf("ERROR: %s\n", err)
+		log.Fatalf("ERROR: Run: %s\n", err)
 	}
 }
 
